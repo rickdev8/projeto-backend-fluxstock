@@ -1,0 +1,10 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: backend-prod
+    ports:
+      - "5000:3000"
+    env_file:
+      - .env

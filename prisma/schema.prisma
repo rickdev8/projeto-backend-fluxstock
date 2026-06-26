@@ -1,0 +1,70 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(uuid())
+  name     String @unique @db.VarChar(255)
+  email    String @unique @db.VarChar(255)
+  password String @db.VarChar(255)
+}
+
+model Product {
+  id           String         @id @default(uuid())
+  barCode      String           @db.VarChar(255)
+  nomeProduto  String         @db.VarChar(255)
+  preco        Int            @db.Integer
+  quantidade   Int            @db.Integer
+  precoVenda   Int            @db.Integer
+  categoria    String         @db.VarChar(255)
+  descricao    String         @db.VarChar(255)
+  salesProduct SalesProduct[]
+}
+
+model Sales {
+  id              String         @id @default(uuid())
+  data            DateTime       @default(now())
+  clientId        String         @db.VarChar()
+  client          Client         @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  total           Decimal        @db.Decimal(10, 2)
+  paymentMethod   String         @db.VarChar(255)
+  salesProduct    SalesProduct[]
+  statusPagamento String         @db.VarChar(255)
+  valorParcial    Decimal?        @db.Decimal(10, 2)
+}
+
+model SalesProduct {
+  id        String  @id @default(uuid())
+  productId String  @db.VarChar()
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quantity  Int     @db.Integer
+  total     Decimal @db.Decimal(10, 2)
+  salesId   String  @db.VarChar(255)
+  sales     Sales   @relation(fields: [salesId], references: [id], onDelete: Cascade)
+}
+
+model Suplier {
+  idFornecedor       String @id @default(uuid())
+  nomeFornecedor     String @db.VarChar(255)
+  telefoneFornecedor String @db.VarChar(255)
+  produtoFornecedor  String @db.VarChar(255)
+  enderecoFornecedor String @db.VarChar(255)
+  cepFornecedor      String @db.VarChar(255)
+}
+
+model Client {
+  id              String  @id @default(uuid())
+  nomeCliente     String  @db.VarChar(255)
+  enderecoCliente String  @db.VarChar(255)
+  telefoneCliente String  @db.VarChar(255)
+  perfilCliente   String  @db.VarChar(255)
+  cepCliente      String  @db.VarChar(255)
+  sales           Sales[]
+  deletedAt       Boolean @default(false)
+}

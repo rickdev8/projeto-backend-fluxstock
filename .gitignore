@@ -1,0 +1,32 @@
+node_modules
+# Keep environment variables out of version control
+.env
+
+/src/generated/prisma
+
+dist
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Dependency directories (remove the comment below to include it)
+# vendor/
+workspace.code-workspace
+node_modules/
+
+.DS_Store
+**/.DS_Store
+*/.DS_Store
+
+.env
+dist

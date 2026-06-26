@@ -1,0 +1,13 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend-projetorg
+    command: npm run dev
+    ports:
+      - "5000:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./:/app
